@@ -56,7 +56,7 @@ sub new {
 		$ua -> ssl_opts (verify_hostname => 0);
 		}
 
-        sub GetUri {
+        sub _GetUri {
 		my $self = shift;
 		my @parts = @_;
 		my $uri = '';
@@ -74,7 +74,7 @@ sub new {
 		
 			}	
            
-            sub AddTokens ($$) {
+            sub _AddTokens ($$) {
             	my $self = shift;
             	my $form = shift;
             	my $salt=`cat /dev/urandom | head -c20 | md5 | head -c10 `;
@@ -87,20 +87,34 @@ sub new {
             	$form->{'salt'} =  $salt;
             	$form->{'signature'} =  $signature;
             }
-            
-            sub get_api_key () {
+            sub _ToQueryString ($@){
+            	my $form_ref = shift;
+            	my @fields = @_;
+            	
+            	foreach my $field (@fields){
+            		
+            		my $temp_line='?';
+            		foreach my $value (@{$form_ref->{$field}}){
+            			$temp_line .= $field.'='.$value.'&';
+            			}
+            		$form_ref->{$field}=$temp_line;
+            		}
+            		
+            	return 1;
+            	}
+            sub Get_api_key () {
             	   my $self = shift; 
             	   
             	   return $self->{'api_key'};
             }
             
-            sub get_secret_key () {
+            sub Get_secret_key () {
             	   my $self = shift; 
             	   
             	   return $self->{'secret_key'};
             }
             
-           sub get_url () {
+           sub Get_url () {
             	   my $self = shift; 
             	   
             	   return $self->{'url'};
@@ -113,7 +127,7 @@ sub new {
 	sub GetAllDepartments {
 		
 		my $self = shift;
-		my $uri = GetUri($self,'Base','Department');
+		my $uri = _GetUri($self,'Base','Department');
 		my $response = $ua->get($uri);
 		
 		return $response;
@@ -121,7 +135,7 @@ sub new {
 	sub GetDepartment ($){
 		my $self = shift;
 		my $id = shift;
-		my $uri = GetUri($self,'Base','Department',$id);
+		my $uri = _GetUri($self,'Base','Department',$id);
 		my $response = $ua->get($uri);
 		
 		
@@ -131,7 +145,7 @@ sub new {
 		my $self = shift;
 		my $id = shift;
 		my $form_ref = shift;
-		my $uri = GetUri($self,'Base','Department',$id);
+		my $uri = _GetUri($self,'Base','Department',$id);
 		
 		if (ref($form_ref) ne 'HASH'){
             		warn "UpdateDepartment takes a hash reference as an argument\n";
@@ -141,7 +155,9 @@ sub new {
 			warn ("Title argument is empty or absent");
 			return 0;
 		}
-		AddTokens ($self,$form_ref);
+		_AddTokens ($self,$form_ref);
+		_ToQueryString ($form_ref,'usergroupid[]');
+		
 		
 		return $ua->post($uri,$form_ref);
 		
@@ -168,7 +184,7 @@ sub new {
                     $args->{$key} = '-1' unless $args->{$key};
                                   }
                 
-                $uri = GetUri($self,'Tickets','Ticket','ListAll',$args->{'departmentid'},$args->{'ticketstatusid'},$args->{'ownerid'},$args->{'userid'});
+                $uri = _GetUri($self,'Tickets','Ticket','ListAll',$args->{'departmentid'},$args->{'ticketstatusid'},$args->{'ownerid'},$args->{'userid'});
 		$response = $ua->get($uri);
                 return $response;
             }
@@ -191,8 +207,8 @@ sub new {
             		return 0;
             		}
             		
-            	$uri = GetUri($self,'Tickets','TicketSearch');
-		AddTokens($self, $form_ref);
+            	$uri = _GetUri($self,'Tickets','TicketSearch');
+		_AddTokens($self, $form_ref);
 		 
 		return $ua->post($uri,$form_ref);
             	
@@ -205,7 +221,7 @@ sub new {
            
         	sub GetTicketCount () {
             	    my $self = shift;
-            	    my $uri = GetUri($self,'Tickets','TicketSearch');
+            	    my $uri = _GetUri($self,'Tickets','TicketSearch');
              		 
 		return $ua->get($uri);
             	
@@ -220,7 +236,7 @@ sub new {
             my $self = shift;
             my $id = shift;
    
-            my $uri = GetUri($self,'Tickets','TicketPost','ListAll',$id);
+            my $uri = _GetUri($self,'Tickets','TicketPost','ListAll',$id);
           
             return $ua->get($uri);
             }
@@ -228,9 +244,9 @@ sub new {
         sub AddTicketPost ($$) {
             my $self = shift;
             my $form_ref = shift;
-            my $uri = GetUri($self,'Tickets','TicketPost');
+            my $uri = _GetUri($self,'Tickets','TicketPost');
             
-            AddTokens($self, $form_ref);
+            _AddTokens($self, $form_ref);
             return $ua->post($uri,$form_ref);
             }
         #########################################################################      
@@ -242,7 +258,7 @@ sub new {
             my $self = shift;
             my $id = shift;
    
-            my $uri = GetUri($self,'Tickets','TicketPost','ListAll',$id);
+            my $uri = _GetUri($self,'Tickets','TicketPost','ListAll',$id);
           
             return $ua->get($uri);
             }
@@ -251,16 +267,16 @@ sub new {
             my $id = shift;
             my $noteid = shift;
    
-            my $uri = GetUri($self,'Tickets','TicketPost','ListAll',$id,$noteid);
+            my $uri = _GetUri($self,'Tickets','TicketPost','ListAll',$id,$noteid);
           
             return $ua->get($uri);
             }
         sub AddTicketNote ($$) {
             my $self = shift;
             my $form_ref = shift;
-            my $uri = GetUri($self,'Tickets','TicketNote');
+            my $uri = _GetUri($self,'Tickets','TicketNote');
             
-            AddTokens($self, $form_ref);
+            _AddTokens($self, $form_ref);
             return $ua->post($uri,$form_ref);
             }
         sub DeleteTicketNote ($$) {
@@ -268,7 +284,7 @@ sub new {
             my $id = shift;
             my $noteid = shift;
    
-            my $uri = GetUri($self,'Tickets','TicketPost','ListAll',$id,$noteid);
+            my $uri = _GetUri($self,'Tickets','TicketPost','ListAll',$id,$noteid);
           
             return $ua->delete($uri);
             }
@@ -282,7 +298,7 @@ sub new {
             my $self = shift;
             my $id = shift;
             my $response;
-            my $uri = GetUri($self,'Tickets','TicketCustomField',$id);
+            my $uri = _GetUri($self,'Tickets','TicketCustomField',$id);
              
             $response =  $ua->get($uri);
             return $response;
@@ -292,9 +308,9 @@ sub new {
             my $self = shift;
             my $id = shift;
             my $form_ref = shift;
-            my $uri = GetUri($self,'Tickets','TicketCustomField',$id);
+            my $uri = _GetUri($self,'Tickets','TicketCustomField',$id);
             $form_ref->{'dlyixo0n794z'} = URL::Encode::url_encode_utf8($form_ref->{'dlyixo0n794z'} );
-               AddTokens($self, $form_ref);
+               _AddTokens($self, $form_ref);
             return $ua->post($uri,$form_ref);
             }
 
@@ -306,9 +322,9 @@ sub new {
 
         sub TestPost {
             my $self = shift;
-            my $uri = GetUri($self,'Core','Test');
+            my $uri = _GetUri($self,'Core','Test');
             my $form_ref = {};
-            AddTokens($self, $form_ref);
+            _AddTokens($self, $form_ref);
             return $ua->post($uri,$form_ref);
         }
 
