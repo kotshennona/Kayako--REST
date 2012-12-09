@@ -7,7 +7,7 @@ use URL::Encode;
 use LWP::UserAgent;
 
 our $ua;
-$Kayako::Client::VERSION = "0.26";
+$Kayako::Client::VERSION = "0.28";
 	#########################################################################      
         #                                                                       #
         #                           Constructor                                 #
@@ -121,6 +121,30 @@ sub new {
             	   
             	   return $self->{'url'};
             }
+            
+      	#########################################################################      
+        #                                                                       #
+        #               Methods from CustomField Controller.                    #
+        #                                                                       #
+        #########################################################################
+        
+        sub GetCustomFields {
+        	my $self = shift;
+		my $uri = GetUri($self,'Base','CustomField');
+				
+		return $ua->get($uri);
+        	
+       		 }
+       
+       		 
+       	sub GetCustomFieldOptions ($$$$$$$$) {
+        	my $self = shift;
+		my $id = shift;
+		my $uri = GetUri($self,'Base','CustomField',$id);
+				
+		return $ua->get($uri);
+        	}
+        
 	#########################################################################      
         #                                                                       #
         #               Methods from Department Controller.                     #
