@@ -7,18 +7,33 @@ use URL::Encode;
 use LWP::UserAgent;
 
 our $ua; 
+our $VERSION = "0.26";
+	#########################################################################      
+        #                                                                       #
+        #                           Constructor                                 #
+        #                                                                       #
+        #########################################################################
 
 sub new {
-	#my $class = shift;
 	my $self = {};
-	$$self{'api_key'} = 'fbf0cf3b-f56d-67e4-bda8-cf45b69d3a3b';
-	$$self{'secret_key'} = 'ZWFiNjBiYjUtMjI5ZC0xZmI0LTkxZjctNjI3OGVjZWIyNWQ1YWVmYjlkYzYtOTUxMC0zNGM0LTNkOTgtMDc4NjMyN2Q5OTU1';
-	$$self{'url'} = 'https://support.mfisoft.ru/api/index.php?e=';
 	my $error;
 	
+	if (!defined($self->{'api_key'}) || $self->{'api_key'} eq ''){
+		$error = "API key is not provided\n";
+		}
+	if (!defined($self->{'secret_key'}) || $self->{'secret_key'} eq ''){
+		$error = "Secret key is not provided\n";
+		}
+	if (!defined($self->{'url'}) || $self->{'url'} eq ''){
+		$error = "URL to your helpdesk is not provided\n";
+		}
+	if (!$self->{'url'} =~m!^https?\:{1}\/{2}(a-z0-9\.)*\/api\/index\.php\?e?=?!){
+		$error = "URL seems to be invalid\n";
+		}
+		
 	if ($error)
 		{
-		return $error;
+		die ($error);
 		}
 	else
 		{
@@ -64,12 +79,28 @@ sub new {
 		$signature = Digest::SHA::hmac_sha256($salt,$self->{'secret_key'});
                 $signature = APR::Base64::encode($signature);
              
-            	#ref($form) eq 'HASH' or die (AddToken takes a hashref as an argument.);
             	$form->{'apikey'} =  $self->{'api_key'};
             	$form->{'salt'} =  $salt;
             	$form->{'signature'} =  $signature;
             }
-        
+            
+            sub get_api_key () {
+            	   my $self = shift; 
+            	   
+            	   return $self->{'api_key'};
+            }
+            
+            sub get_secret_key () {
+            	   my $self = shift; 
+            	   
+            	   return $self->{'secret_key'};
+            }
+            
+           sub get_url () {
+            	   my $self = shift; 
+            	   
+            	   return $self->{'url'};
+            }
 	#########################################################################      
         #                                                                       #
         #               Methods from Department Controller.                     #
@@ -92,6 +123,27 @@ sub new {
 		
 		return $response;
 	}
+	sub UpdateDepartment ($$){
+		my $self = shift;
+		my $id = shift;
+		my $form_ref = shift;
+		my $uri = GetUri($self,'Base','Department',$id);
+		
+		if (ref($form_ref) ne 'HASH'){
+            		warn "UpdateDepartment takes a hash reference as an argument\n";
+            		return 0;
+            		}
+		if (!defined $form_ref->{title} || $form_ref->{title} eq ''){
+			warn ("Title argument is empty or absent");
+			return 0;
+		}
+		AddTokens ($form_ref);
+		
+		return $client->post($uri,$form_ref);
+		
+	}
+			
+		
 	#########################################################################      
         #                                                                       #
         #               Methods from Tickets Controller.                        #
@@ -116,7 +168,11 @@ sub new {
 		$response = $ua->get($uri);
                 return $response;
             }
-         
+        #########################################################################      
+        #                                                                       #
+        #               Methods from TicketSearch Controller.                   #
+        #                                                                       #
+        #########################################################################       
             sub SearchTickets ($){
             	    my ($uri, $response);
             	my $form_ref = shift;
@@ -136,8 +192,13 @@ sub new {
 		return $ua->post($uri,$form_ref);
             	
             }
-            
-            sub Get TicketCount () {
+        #########################################################################      
+        #                                                                       #
+        #               Methods from TicketCount Controller.                    #
+        #                                                                       #
+        #########################################################################
+           
+        	sub Get TicketCount () {
             	    my $self = shift;
             	    
               	$uri = GetUri($self,'Tickets','TicketSearch');
