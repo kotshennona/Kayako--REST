@@ -15,9 +15,13 @@ our $VERSION = "0.26";
         #########################################################################
 
 sub new {
-	my $self = {};
+	my $class = shift;
+	my $self = shift;
 	my $error;
 	
+	if (ref($self) ne 'HASH'){
+		$error = "Constructor takes a HASH refrence as an argument\n";
+		}
 	if (!defined($self->{'api_key'}) || $self->{'api_key'} eq ''){
 		$error = "API key is not provided\n";
 		}
@@ -37,7 +41,7 @@ sub new {
 		}
 	else
 		{
-		bless ($self);
+		bless ($self,$class);
 	return $self;
 		}
 	}
@@ -137,9 +141,9 @@ sub new {
 			warn ("Title argument is empty or absent");
 			return 0;
 		}
-		AddTokens ($form_ref);
+		AddTokens ($self,$form_ref);
 		
-		return $client->post($uri,$form_ref);
+		return $ua->post($uri,$form_ref);
 		
 	}
 			
@@ -174,7 +178,8 @@ sub new {
         #                                                                       #
         #########################################################################       
             sub SearchTickets ($){
-            	    my ($uri, $response);
+            	my ($uri, $response);
+            	my $self = shift;
             	my $form_ref = shift;
             	
             	if (ref($form_ref) ne 'HASH'){
@@ -198,10 +203,9 @@ sub new {
         #                                                                       #
         #########################################################################
            
-        	sub Get TicketCount () {
+        	sub GetTicketCount () {
             	    my $self = shift;
-            	    
-              	$uri = GetUri($self,'Tickets','TicketSearch');
+            	    my $uri = GetUri($self,'Tickets','TicketSearch');
              		 
 		return $ua->get($uri);
             	
