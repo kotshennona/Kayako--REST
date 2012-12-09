@@ -116,35 +116,7 @@ sub new {
 		$response = $ua->get($uri);
                 return $response;
             }
-         
-            sub SearchTickets ($){
-            	    my ($uri, $response);
-            	my $form_ref = shift;
-            	
-            	if (ref($form_ref) ne 'HASH'){
-            		warn "Search Tickets takes a has reference as an argument\n";
-            		return 0;
-            		}
-            	if ( !defined $form_ref->{query} ||  $form_ref->{query} eq ''){
-            		warn "Query string is empty\n";
-            		return 0;
-            		}
-            		
-            	$uri = GetUri($self,'Tickets','TicketSearch');
-		AddTokens($self, $form_ref);
-		 
-		return $ua->post($uri,$form_ref);
-            	
-            }
-            
-            sub Get TicketCount () {
-            	    my $self = shift;
-            	    
-              	$uri = GetUri($self,'Tickets','TicketSearch');
-             		 
-		return $ua->get($uri);
-            	
-            	}
+
         #########################################################################      
         #                                                                       #
         #               Methods from Ticket Post Controller.                    #
@@ -162,11 +134,12 @@ sub new {
 
         sub AddTicketPost ($$) {
             my $self = shift;
-            my $form_ref = shift;
+            my $contents_ref = shift;
             my $uri = GetUri($self,'Tickets','TicketPost');
             
-            AddTokens($self, $form_ref);
-            return $ua->post($uri,$form_ref);
+            AddTokens($self, $contents_ref);
+            $contents_ref->{'contents'} = URL::Encode::url_encode_utf8($contents_ref->{'contents'} );
+            return $ua->post($uri,$contents_ref);
             }
         #########################################################################      
         #                                                                       #
@@ -192,11 +165,12 @@ sub new {
             }
         sub AddTicketNote ($$) {
             my $self = shift;
-            my $form_ref = shift;
+            my $contents_ref = shift;
             my $uri = GetUri($self,'Tickets','TicketNote');
             
-            AddTokens($self, $form_ref);
-            return $ua->post($uri,$form_ref);
+            AddTokens($self, $contents_ref);
+           # $contents_ref->{'contents'} = URL::Encode::url_encode_utf8($contents_ref->{'contents'} );
+            return $ua->post($uri,$contents_ref);
             }
         sub DeleteTicketNote ($$) {
             my $self = shift;
