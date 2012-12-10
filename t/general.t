@@ -1,15 +1,15 @@
 use strict;
 use Test::Simple tests => 6;
-use Kayako::Client; 
+use Kayako::REST; 
 
 my $tokens_ref = { api_key => 'fbf0cf3b-f56d-67e4-bda8-cf45b69d3a3b',
 	secret_key => 'ZWFiNjBiYjUtMjI5ZC0xZmI0LTkxZjctNjI3OGVjZWIyNWQ1YWVmYjlkYzYtOTUxMC0zNGM0LTNkOTgtMDc4NjMyN2Q5OTU1',
 	url => 'https://support.mfisoft.ru/fusion/api/index.php?'};
 			
-my $client = Kayako::Client->new($tokens_ref);
+my $client = Kayako::REST->new($tokens_ref);
 
 # 1.
-ok( defined($client) && ref $client eq 'Kayako::Client', 'new() works' );
+ok( defined($client) && ref $client eq 'Kayako::REST', 'new() works' );
 
 # 2.
 ok ($client->GetApiKey eq $tokens_ref->{api_key});
