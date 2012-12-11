@@ -1,4 +1,4 @@
-package Kayako::Client;
+package Kayako::REST;
 use strict;
 use warnings;
 use Digest::SHA qw(hmac_sha256);
@@ -8,7 +8,7 @@ use LWP::UserAgent;
 
 our $ua;
 our %customfields=();
-$Kayako::Client::VERSION = "0.28";
+$Kayako::REST::VERSION = "0.28";
 	#########################################################################      
         #                                                                       #
         #                           Constructor                                 #
