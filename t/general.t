@@ -1,5 +1,5 @@
 use strict;
-use Test::Simple tests => 6;
+use Test::Simple tests => 8;
 use Kayako::REST; 
 
 my $tokens_ref = { api_key => 'fbf0cf3b-f56d-67e4-bda8-cf45b69d3a3b',
@@ -25,3 +25,9 @@ ok($client->GetCustomFields->is_success,'Get customfields list');
 
 # 6.
 ok($client->GetCustomFieldOptions(1)->is_success,'Get list of options for particular CF ID');
+
+# 7.
+ok($client->GetTicketStatuses->is_success,'Get  Statuses list');
+
+# 8.
+ok($client->GetTicketStatus(1)->is_success,'Get  status by id');

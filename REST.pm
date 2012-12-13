@@ -8,7 +8,7 @@ use LWP::UserAgent;
 
 our $ua;
 our %customfields=();
-$Kayako::REST::VERSION = "0.28";
+$Kayako::REST::VERSION = "0.29";
 	#########################################################################      
         #                                                                       #
         #                           Constructor                                 #
@@ -138,10 +138,33 @@ sub new {
        		 }
        
        		 
-       	sub GetCustomFieldOptions  {
+       	sub GetCustomFieldOptions ($) {
         	my $self = shift;
 		my $id = shift;
 		my $uri = GetUri($self,'Base','CustomField',$id);
+				
+		return $ua->get($uri);
+        	}
+
+        #########################################################################      
+        #                                                                       #
+        #             Methods from Ticket Status Controller.                    #
+        #                                                                       #
+        #########################################################################
+        
+        sub GetTicketStatuses {
+        	my $self = shift;
+		my $uri = GetUri($self,'Tickets','TicketStatus');
+				
+		return $ua->get($uri);
+        	
+       		 }
+       
+       		 
+       	sub GetTicketStatus ($) {
+        	my $self = shift;
+		my $id = shift;
+		my $uri = GetUri($self,'Tickets','TicketStatus',$id);
 				
 		return $ua->get($uri);
         	}
