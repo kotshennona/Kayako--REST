@@ -258,18 +258,18 @@ sub new {
         sub GetAllTickets {
             my $uri;
             my $response;
-            my  $args;
+            my  $args_href;
             my $self = shift;
             if (@_) {
-                $args   = shift;
+                $args_href   = shift;
                 } else {
-                $args = {};
+                $args_href = {};
                     }
                 foreach my $key ('departmentid', 'ticketstatusid','ownerid','userid')    {
-                    $args->{$key} = '-1' unless $args->{$key};
+                    $args_href->{$key} = '-1' unless $args_href->{$key};
                                   }
                 
-                $uri = GetUri($self,'Tickets','Ticket','ListAll',$args->{'departmentid'},$args->{'ticketstatusid'},$args->{'ownerid'},$args->{'userid'});
+                $uri = GetUri($self,'Tickets','Ticket','ListAll',$args_href->{'departmentid'},$args_href->{'ticketstatusid'},$args_href->{'ownerid'},$args_href->{'userid'});
 		$response = $ua->get($uri);
                 return $response;
             }
@@ -397,6 +397,100 @@ sub new {
             $form_ref->{'dlyixo0n794z'} = URL::Encode::url_encode_utf8($form_ref->{'dlyixo0n794z'} );
                _AddTokens($self, $form_ref);
             return $ua->post($uri,$form_ref);
+            }
+        #########################################################################      
+        #                                                                       #
+        #               Methods from Ticket Controller.                        #
+        #                                                                       #
+        #########################################################################
+
+        sub GetAllUsers ($) {
+            my $self = shift;
+            my $form_ref = shift  if (@_);
+            my $uri;
+
+            if ( defined ($form_ref))  {
+                unless (ref ($form_ref) eq 'HASH'){
+                    warn "GetAllUsers takes a hash reference as its argument";
+                    return 0;
+                        }
+                 $uri = GetUri($self,'Base','User','Filter',$form_ref->{'marker'},$form_ref->{'maxitem'});
+                   
+                    }
+            else {    
+             $uri = GetUri($self,'Base','User','Filter');
+             }
+              
+            return $ua->get($uri);
+            }
+
+        sub GetUser ($){
+            my $self = shift;
+            my $id = shift;
+            my $uri;
+            
+            $uri = GetUri($self,'Base','User','Filter',$id);
+
+            return $ua->get($uri);
+
+            }
+
+        sub UpdateUser ($$){
+            my $self = shift;
+            my $id = shift;
+            my $form_ref = shift;
+            my $uri;
+            
+            unless (ref $form_ref eq 'HASH'){
+                    warn "GetAllUsers takes a hash reference as its argument";
+                    return 0;
+                        }
+            $uri = GetUri($self,'Base','User',$id);
+            _AddTokens($self, $form_ref);
+
+            $form_ref->{'signature'} = URL::Encode::url_encode($form_ref->{'signature'});
+            $form_ref->{'salt'} = URL::Encode::url_encode($form_ref->{'salt'});
+
+            return $ua->put($uri,$form_ref);
+            }
+
+        sub AddUser ($){
+            my $self = shift;
+            my $form_ref = shift;
+            my $uri;
+            
+            unless (ref ($form_ref) eq 'HASH'){
+                    warn "GetAllUsers takes a hash reference as its argument";
+                    return 0;
+                        }
+            if (!$form_ref->{'fullname'}){
+                warn "Fullname is required\n";
+            }
+            if (!defined $form_ref->{'usergroupid'}){
+                warn "Usergroupid is required\n";
+            }
+            if (!$form_ref->{'password'}){
+                warn "Password  is required\n";
+            }
+            if (!$form_ref->{'email'}){
+                warn "Email is required\n";
+            }
+
+            $uri = GetUri($self,'Base','User');
+            _AddTokens($self, $form_ref);
+            
+            return $ua->post($uri,$form_ref);
+        }
+        
+        sub DeleteUser ($){
+            my $self = shift;
+            my $id = shift;
+            my $uri;
+
+            $uri = GetUri($self,'Base','User',$id);
+                      
+            return $ua->delete($uri,);
+
             }
 
         #########################################################################      

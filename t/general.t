@@ -1,12 +1,14 @@
 use strict;
-use Test::Simple tests => 8;
+use Test::Simple tests => 13;
 use Kayako::REST; 
 
-my $tokens_ref = { api_key => 'fbf0cf3b-f56d-67e4-bda8-cf45b69d3a3b',
-	secret_key => 'ZWFiNjBiYjUtMjI5ZC0xZmI0LTkxZjctNjI3OGVjZWIyNWQ1YWVmYjlkYzYtOTUxMC0zNGM0LTNkOTgtMDc4NjMyN2Q5OTU1',
-	url => 'https://support.mfisoft.ru/fusion/api/index.php?'};
+my $tokens_ref = { api_key => '',
+	secret_key => '',
+	url => 'https://support.mfisoft.ru/fusion/api/index.php?e='};
 			
 my $client = Kayako::REST->new($tokens_ref);
+my $response;
+my $id;
 
 # 1.
 ok( defined($client) && ref $client eq 'Kayako::REST', 'new() works' );
@@ -31,3 +33,25 @@ ok($client->GetTicketStatuses->is_success,'Get  Statuses list');
 
 # 8.
 ok($client->GetTicketStatus(1)->is_success,'Get  status by id');
+
+# 9.
+ok($client->GetAllUsers({})->is_success,'Get  user list');
+
+# 10.
+$response = $client->AddUser({fullname=>'Test Test2',usergroupid=>'2',password=>'qweasdzxc',email=>'test3@domain.com'});
+ok($response->is_success,'Created a user');
+
+# 11.
+$id = $1 if $response->decoded_content =~ m!\<id\>.*?(\d+).*?\<\/id\>!;
+print "ID is: $id\n";
+ok($client->GetUser($id)->is_success,'Get  user by id');
+
+# 12.
+$response = $client->UpdateUser($id,{fullname=>'Test Renamed'});
+print $response->decoded_content;
+ok($response->is_success,'Updated user');
+
+# 13.
+ok($client->DeleteUser($id)->is_success,'Deleted  user');
+
+
