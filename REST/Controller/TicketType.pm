@@ -1,13 +1,13 @@
-package Kayako::REST::Controller::Department;
+package Kayako::REST::Controller::TicketType;
 use strict;
 use warnings;
-use Kayako::Class::Department;
+use Kayako::Class::TicketType;
 use XML::Simple;
 
 BEGIN {
 use parent 'Kayako::REST::Controller';
 
-$Kayako::REST::Controller::Department::VERSION = '0.10';
+$Kayako::REST::Controller::TicketType::VERSION = '0.10';
 }
 
 sub new {
@@ -40,16 +40,13 @@ sub new {
 		}
 	}
 	
-	
-	
-	
-		
+			
 	sub Get {
 		my $self = shift;
-		my @path = qw(Base Department);
+		my @path = qw(Tickets TicketType);
 		my $response;
 		my $response_href;
-		my @departments;
+		my @TicketTypes;
 		
 		if (@_){
 			push (@path,shift);
@@ -71,12 +68,12 @@ sub new {
 			
 				
 		if (wantarray){
-			$response_href = XMLin ($response, KeyAttr=>{department => 'id' });			
-			$response_href = $response_href->{'department'};
+			$response_href = XMLin ($response, KeyAttr=>{tickettype => 'id' });			
+			$response_href = $response_href->{'tickettype'};
 			
-				$response_href->{'departmentid'}=$response_href->{'id'};
-				push (@departments, Kayako::Class::Ticket->new($response_href));
-					return @departments;
+				$response_href->{'tickettypeid'}=$response_href->{'id'};
+				push (@TicketTypes, Kayako::Class::Ticket->new($response_href));
+					return @TicketTypes;
 						
 					}
 		else {
@@ -87,10 +84,10 @@ sub new {
 	
 	sub GetAll {
 		my $self = shift;
-		my @path = qw(Base Department);
+		my @path = qw(Tickets TicketType);
 		my $response;
 		my $response_href;
-		my @departments;
+		my @TicketTypes;
 		
 								
 		$response = $self->SUPER::Get(@path);
@@ -105,12 +102,12 @@ sub new {
 			
 				
 		if (wantarray){
-			$response_href = XMLin ($response, KeyAttr=>{department => 'id' });			
-			$response_href = $response_href->{'department'};
+			$response_href = XMLin ($response, KeyAttr=>{tickettype => 'id' });			
+			$response_href = $response_href->{'tickettype'};
 			foreach my $key (%$response_href){
-				$response_href->{$key}->{'departmentid'}=$key;
-				push (@departments, Kayako::Class::Department->new($response_href->{$key}));
-					return @departments;
+				$response_href->{$key}->{'tickettypeid'}=$key;
+				push (@TicketTypes, Kayako::Class::TicketType->new($response_href->{$key}));
+					return @TicketTypes;
 						}
 					}
 		else {
