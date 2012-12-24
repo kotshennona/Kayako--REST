@@ -40,6 +40,46 @@ sub new {
 		}
 	}
 	
+	sub Get {
+		my $self = shift;
+		my @path = qw(Tickets Ticket);
+		my $response;
+		my $response_href;
+		my @tickets;
+		
+		if (@_){
+			push (@path,shift);
+		}
+		else {
+			warn ("Missing argument to Get in Ticket Controller!\n");
+			return undef;
+		}
+		
+		$response = $self->SUPER::Get(@path);
+		if ($response->is_success){
+			$response = $response->decoded_content;
+			}
+		else {
+			warn $response ->status_line;
+			return undef;
+			}
+			
+				
+		if (wantarray){
+			$response_href = XMLin ($response, KeyAttr=>{ticket => 'id' });			
+			$response_href = $response_href->{'ticket'};
+			
+				$response_href->{'ticketid'}=$response_href->{'id'};
+				push (@tickets, Kayako::Class::Ticket->new($response_href));
+					return @tickets;
+						
+					}
+		else {
+			return $response;
+				}
+					
+	}
+	
 	sub GetAll {
 		my $self = shift;
 		my @path = qw(Tickets Ticket ListAll);
