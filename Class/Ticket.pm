@@ -1,0 +1,42 @@
+package Kayako::Class::Ticket;
+use strict;
+use warnings;
+use Class::Accessor "antlers";
+
+
+has ticketid => ( is => "ro" );
+has displayid => ( is => "ro" );
+has departmentid => ( is => "ro" );
+has statusid => ( is => "ro" );
+has priorityid => ( is => "ro" );
+has typeid => ( is => "ro" );
+has userid => ( is => "ro" );
+has userorganization => ( is => "ro" );
+has userorganizationid => ( is => "ro" );
+has ownerstaffid => ( is => "ro" );
+has ownerstaffname => ( is => "ro" );
+has fullname => ( is => "ro" );
+has email => ( is => "ro" );
+has lastreplier => ( is => "ro" );
+has subject => ( is => "ro" );
+has creationtime => ( is => "ro" );
+has lastactivity => ( is => "ro" );
+has laststaffreply => ( is => "ro" );
+has lastuserreply => ( is => "ro" );
+has slaplanid => ( is => "ro" );
+has nextreplydue => ( is => "ro" );
+has resolutiondue => ( is => "ro" );
+has replies => ( is => "ro" );
+has ipaddress => ( is => "ro" );
+has creator => ( is => "ro" );
+has creationmode => ( is => "ro" );
+has creationtype => ( is => "ro" );
+has isescalated => ( is => "ro" );
+has escalationruleid => ( is => "ro" );
+has templategroupid => ( is => "ro" );
+has templategroupname => ( is => "ro" );
+has tags => ( is => "ro" );
+has watcherstaffid => ( is => "ro" );
+has workflowid => ( is => "ro" );
+
+1;
