@@ -5,6 +5,8 @@ use LWP::UserAgent;
 use Kayako::REST::Controller::Ticket;
 use Kayako::REST::Controller::TicketNote;
 use Kayako::REST::Controller::TicketPost;
+use Kayako::REST::Controller::TicketType;
+use Kayako::REST::Controller::Dpartment;
 
 $Kayako::REST::Client::VERSION = "0.09";
 
@@ -83,8 +85,6 @@ sub _NewController {
             	  my ($self,$controller) = @_;
             	  my $error;	
 		
-		#$error = "URL seems to be invalid\n" unless $self->{'url'} =~ m!^https?\:{1}\/{2}(a-z0-9\.)*\/api\/index\.php\?e?=?!;
-		
 				if ($error) {
 					warn $error;
 					return undef;
@@ -106,7 +106,11 @@ sub GetAsHashref {
 
 	}
 
-            	    
+
+sub Department {
+            	    my $self = shift;
+            	    return _NewController ($self,'Kayako::REST::Controller::Department');
+            }    	
             
 sub Ticket {
             	    my $self = shift;
@@ -120,6 +124,10 @@ sub TicketPost {
             	    my $self = shift;
             	    return _NewController ($self,'Kayako::REST::Controller::TicketPost');
             }   
-            
+
+sub TicketType {
+            	    my $self = shift;
+            	    return _NewController ($self,'Kayako::REST::Controller::TicketType');
+            }             
             
 1;
