@@ -30,7 +30,7 @@ sub new {
 	if (!defined($self->{'secret_key'}) || $self->{'secret_key'} eq ''){
 		$error = "Secret key is not provided\n";
 		}
-	if (!defined($self->{'url'}) || $self->{'url'} eq ''){
+	if (!$self->{'url'}){
 		$error = "URL to your helpdesk is not provided\n";
 		}
 	if (!$self->{'url'} =~m!^https?\:{1}\/{2}(a-z0-9\.)*\/api\/index\.php\?e?=?!){
