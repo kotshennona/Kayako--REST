@@ -132,7 +132,7 @@ sub new {
 		
 		
 		_AddTokens ($self,$form_ref);
-		#_ToQueryString ($form_ref,'usergroupid[]');
+		_ToQueryString ($form_ref,'usergroupid[]');
 				
 		return $self->{'user_agent'}->put($uri,$form_ref);
 		

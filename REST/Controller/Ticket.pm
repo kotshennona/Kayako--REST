@@ -40,6 +40,113 @@ sub new {
 		}
 	}
 	
+	
+	sub Create {
+		
+		my $self = shift;
+		my @path = qw(Tickets Ticket);
+		my $form_ref;
+		my $response_href;
+		my $response;
+		my @tickets;
+		my @required = qw(subject fullname email contents departmentid ticketstatusid ticketpriorityid tickettypeid);
+		
+		
+		if (@_){
+			
+			$form_ref = shift;
+			
+			}
+		else {
+			warn ("Post in Tickets Controller requires a hashref as its arguments");
+			return undef;
+			}
+		
+		foreach my $field (@required) {
+			unless ($form_ref->{$field}){
+				warn ("$field is required!\n");
+				return undef;
+				}
+
+			unless ($form_ref->{'autouserid'} || $form_ref->{'userid'} || $form_ref->{'staffid'} ){
+				warn ("You must provide one of the following options: autouserid, userid or staffid!");
+				return undef;
+				}
+ 
+		$response = $self->SUPER::Post(@path,$form_ref);
+		
+		if ($response->is_success){
+			$response = $response->decoded_content;
+			}
+		else {
+			warn $response ->status_line."\n".$response->decoded_content."\n";
+			return undef;
+			}
+	
+		if (wantarray){
+			$response_href = XMLin ($response, KeyAttr=>{ticket => 'id' });			
+			$response_href = $response_href->{'ticket'};
+			
+			$response_href->{'ticketid'}=$response_href->{'id'};
+			push (@tickets, Kayako::Class::Ticket->new($response_href));
+				return @tickets;
+						
+					}
+		else {
+			return $response;
+				}
+	
+		}
+	}
+	sub Update {
+		my $self = shift;
+		my @path = qw(Tickets Ticket);
+		my %editable_fields;
+		my @editable_fields = qw(subject fullname email departmentid ticketstatusid ticketpriorityid tickettypeid ownerstaffid userid templategroup);
+		my $form_ref;
+		my $response_href;
+		my $response;
+		my @tickets;
+		
+		if (@_){
+			push (@path,shift);
+			$form_ref = shift;
+			
+			}
+		else {
+			warn ("Update in Tickets Controller requires a ticketid and a hashref as its arguments");
+			return undef;
+			}
+		foreach  my $field (@editable_fields){
+			$editable_fields{$field} = 1;
+			}
+		foreach my $key (%$form_ref){
+			delete $form_ref->{$key} unless $editable_fields{$key};
+			}
+		
+			$response = $self->SUPER::Put(@path,$form_ref);
+		if ($response->is_success){
+			$response = $response->decoded_content;
+			}
+		else {
+			warn $response ->status_line;
+			return undef;
+			}
+	
+		if (wantarray){
+			$response_href = XMLin ($response, KeyAttr=>{ticket => 'id' });			
+			$response_href = $response_href->{'ticket'};
+			
+			$response_href->{'ticketid'}=$response_href->{'id'};
+			push (@tickets, Kayako::Class::Ticket->new($response_href));
+				return @tickets;
+						
+					}
+		else {
+			return $response;
+				}
+		}
+		
 	sub Get {
 		my $self = shift;
 		my @path = qw(Tickets Ticket);
