@@ -4,7 +4,7 @@ use warnings;
 use Class::Accessor "antlers";
 
 
-has ticketid => ( is => "ro" );
+has id => ( is => "ro" );
 has displayid => ( is => "ro" );
 has departmentid => ( is => "ro" );
 has statusid => ( is => "ro" );

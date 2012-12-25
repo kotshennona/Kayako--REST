@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Class::Accessor "antlers";
 
-tickettypeid => ( is => 'ro');
+has id => ( is => 'ro');
 has title => ( is => 'ro');
 has displayorder => ( is => 'ro');
 has departmentid => ( is => 'ro');

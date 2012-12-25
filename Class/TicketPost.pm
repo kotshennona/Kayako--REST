@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Class::Accessor "antlers";
  
-has ticketpostid => ( is => 'ro');
+has id => ( is => 'ro');
 has ticketid => ( is => 'ro');
 has dateline => ( is => 'ro');
 has userid => ( is => 'ro');

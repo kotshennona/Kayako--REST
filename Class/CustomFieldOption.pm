@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Class::Accessor "antlers";
 
-has customfieldoptionid => ( is =>'ro');
+has id => ( is =>'ro');
 has customfieldid => ( is =>'ro');
 has optionvalue => ( is =>'ro');
 has displayorder => ( is =>'ro');

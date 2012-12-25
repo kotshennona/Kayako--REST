@@ -6,7 +6,7 @@ use Kayako::REST::Controller::Ticket;
 use Kayako::REST::Controller::TicketNote;
 use Kayako::REST::Controller::TicketPost;
 use Kayako::REST::Controller::TicketType;
-use Kayako::REST::Controller::Dpartment;
+use Kayako::REST::Controller::Department;
 
 $Kayako::REST::Client::VERSION = "0.09";
 

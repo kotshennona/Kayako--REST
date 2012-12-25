@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Class::Accessor "antlers";
 
-has customfieldid => (is => 'ro');
+has id => (is => 'ro');
 has customfieldgroupid => (is => 'ro');
 has title => (is => 'ro');
 has fieldtype => (is => 'ro');

@@ -74,8 +74,8 @@ sub new {
 			$response_href = XMLin ($response, KeyAttr=>{department => 'id' });			
 			$response_href = $response_href->{'department'};
 			
-				$response_href->{'departmentid'}=$response_href->{'id'};
-				push (@departments, Kayako::Class::Ticket->new($response_href));
+				#$response_href->{'departmentid'}=$response_href->{'id'};
+				push (@departments, Kayako::Class::Department->new($response_href));
 					return @departments;
 						
 					}
@@ -90,7 +90,7 @@ sub new {
 		my @path = qw(Base Department);
 		my $response;
 		my $response_href;
-		my @departments;
+		my @response=();
 		
 								
 		$response = $self->SUPER::Get(@path);
@@ -105,14 +105,19 @@ sub new {
 			
 				
 		if (wantarray){
-			$response_href = XMLin ($response, KeyAttr=>{department => 'id' });			
-			$response_href = $response_href->{'department'};
-			foreach my $key (%$response_href){
-				$response_href->{$key}->{'departmentid'}=$key;
-				push (@departments, Kayako::Class::Department->new($response_href->{$key}));
-					return @departments;
+			$response_href = XMLin ($response);
+			
+			
+			foreach my $key (keys (%{$response_href->{'department'}})){
+				
+				$response_href->{'department'}->{$key}->{'id'} = $key;
+				
+				push (@response,  Kayako::Class::Department->new($response_href->{'department'}->{$key}));
+					print $#response;
+					
 						}
-					}
+			return @response;	
+				}
 		else {
 			return $response;
 				}
