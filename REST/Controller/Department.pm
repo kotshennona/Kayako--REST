@@ -74,7 +74,6 @@ sub new {
 			$response_href = XMLin ($response, KeyAttr=>{department => 'id' });			
 			$response_href = $response_href->{'department'};
 			
-				#$response_href->{'departmentid'}=$response_href->{'id'};
 				push (@departments, Kayako::Class::Department->new($response_href));
 					return @departments;
 						
