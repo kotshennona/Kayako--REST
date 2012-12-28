@@ -97,13 +97,13 @@ sub Get {
 
                         foreach my $group (@groups){
 				foreach my $key (keys (%{$group->{'field'}})) {
-                                    print $key;
-                          #  print ref ($group->{'content'});
-                          #      $key->{'content'}->{$key}->{'id'} = $key;
-                          #      $key->{'content'}->{$key}->{'groupid'} = $group->{'id'};
-                          #      $key->{'content'}->{$key}->{'grouptitle'} = $group->{'title'};
+                                  
+                      
+                              $group->{'field'}->{$key}->{'id'} = $key;
+                              $group->{'field'}->{$key}->{'groupid'} = $group->{'id'};
+                              $group->{'field'}->{$key}->{'grouptitle'} = $group->{'title'};
 
-				push (@fields, 	Kayako::Class::CustomFieldValue->new($key->{'content'}->{$key}));
+				push (@fields, 	Kayako::Class::CustomFieldValue->new($group->{'field'}->{$key}));
 
 						}
 

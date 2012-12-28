@@ -9,6 +9,6 @@ has grouptitle => ( is =>'ro');
 has type => ( is =>'ro');
 has name => ( is =>'ro');
 has title => ( is =>'ro');
-has contents => ( is =>'ro');
+has content => ( is =>'ro');
 
 1;
