@@ -2,6 +2,7 @@ package Kayako::REST::Controller::CustomField;
 use strict;
 use warnings;
 use Kayako::Class::CustomField;
+use Kayako::Class::CustomFieldOption;
 use XML::Simple;
 
 BEGIN {
@@ -38,6 +39,51 @@ sub new {
 		bless ($self,$class);
 		return $self;
 		}
+	}
+
+
+sub GetOptions {
+		my $self = shift;
+		my @path = qw(Base CustomField ListOptions);
+		my $response;
+		my $response_href;
+		my @options;
+
+                if (@_){
+			push (@path,shift);
+		}
+		else {
+			warn ("Missing argument to Get in CustomField Controller!\n");
+			return undef;
+		}
+		
+		
+		$response = $self->SUPER::Get(@path);
+
+		if ($response->is_success){
+			$response = $response->decoded_content;
+			}
+		else {
+			warn $response ->status_line;
+                        warn $response->decoded_content;
+			return undef;
+			}
+			
+				
+		if (wantarray){
+			$response_href = XMLin ($response );			
+			                                 
+                               foreach my $option (@{$response_href->{'option'}}){
+                                print $option;
+				push (@options, Kayako::Class::CustomFieldOption->new($option));
+					
+                                        	}
+                                    return @options;	
+					}
+		else {
+			return $response;
+				}
+					
 	}
 
 

@@ -4,6 +4,7 @@ use warnings;
 use Class::Accessor "antlers";
 
 has id => (is => 'ro');
+has customfieldid => (is => 'ro');
 has customfieldgroupid => (is => 'ro');
 has title => (is => 'ro');
 has fieldtype => (is => 'ro');
