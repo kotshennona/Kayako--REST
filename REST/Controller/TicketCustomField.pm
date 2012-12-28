@@ -139,7 +139,7 @@ sub Get {
 				foreach my $key (keys (%{$group->{'field'}})) {
                                   
                       
-                              $group->{'field'}->{$key}->{'id'} = $key;
+                              $group->{'field'}->{$key}->{'name'} = $key;
                               $group->{'field'}->{$key}->{'groupid'} = $group->{'id'};
                               $group->{'field'}->{$key}->{'grouptitle'} = $group->{'title'};
 
