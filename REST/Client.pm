@@ -6,6 +6,7 @@ use Kayako::REST::Controller::Ticket;
 use Kayako::REST::Controller::TicketNote;
 use Kayako::REST::Controller::TicketPost;
 use Kayako::REST::Controller::TicketType;
+use Kayako::REST::Controller::CustomField;
 use Kayako::REST::Controller::TicketCustomField;
 use Kayako::REST::Controller::Department;
 
@@ -131,6 +132,10 @@ sub TicketType {
             	    return _NewController ($self,'Kayako::REST::Controller::TicketType');
             }             
 
+sub CustomField {
+            	    my $self = shift;
+            	    return _NewController ($self,'Kayako::REST::Controller::CustomField');
+            }     
 
 sub TicketCustomField {
             	    my $self = shift;

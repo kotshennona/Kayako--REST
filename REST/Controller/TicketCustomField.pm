@@ -61,6 +61,7 @@ sub Add {
         my $self = shift;
         my @path = qw(Tickets TicketCustomField);
         my $form_ref;
+        my $response;
         
         if (@_){
 			push (@path,shift);
