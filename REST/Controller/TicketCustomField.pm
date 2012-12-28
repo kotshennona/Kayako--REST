@@ -56,6 +56,45 @@ sub new {
 	}
 
 
+
+sub Add {
+        my $self = shift;
+        my @path = qw(Tickets TicketCustomField);
+        my $form_ref;
+        
+        if (@_){
+			push (@path,shift);
+		}
+	else {
+			warn ("Missing argument to Get in Ticket Controller!\n");
+			return undef;
+		}
+	if (@_){
+			$form_ref = shift;
+		}
+	else {
+			warn ("Missing argument to Get in Ticket Controller!\n");
+			return undef;
+		}
+			
+         
+         if ( ref $form_ref ne 'HASH'){
+                 warn ("Second argument has to be a hashref!\n");
+			return undef;
+                }
+        
+                $response = $self->SUPER::Post(@path,$form_ref);
+
+		if ($response->is_success){
+			$response = $response->decoded_content;
+			}
+		else {
+			warn $response ->status_line;
+			return undef;
+			}                
+
+                  }
+
 sub Get {
 		my $self = shift;
 		my @path = qw(Tickets TicketCustomField);
