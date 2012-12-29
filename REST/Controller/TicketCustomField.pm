@@ -63,8 +63,10 @@ sub Add {
         my $form_ref;
         my $response;
         
+        
         if (@_){
-			push (@path,shift);
+			 
+        		push (@path,shift);
 		}
 	else {
 			warn ("Missing argument to Get in Ticket Controller!\n");
@@ -77,7 +79,8 @@ sub Add {
 			warn ("Missing argument to Get in Ticket Controller!\n");
 			return undef;
 		}
-			
+		
+	
          
          if ( ref $form_ref ne 'HASH'){
                  warn ("Second argument has to be a hashref!\n");
@@ -93,7 +96,7 @@ sub Add {
 			warn $response ->status_line;
 			return undef;
 			}                
-
+			return $response;
                   }
 
 sub Get {

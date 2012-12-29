@@ -74,7 +74,7 @@ sub GetOptions {
 			$response_href = XMLin ($response );			
 			                                 
                                foreach my $option (@{$response_href->{'option'}}){
-                                print $option;
+                               
 				push (@options, Kayako::Class::CustomFieldOption->new($option));
 					
                                         	}
@@ -110,6 +110,7 @@ sub GetCustomFields {
 			$response_href = XMLin ($response );			
 			                                 
                                foreach my $customfield (@{$response_href->{'customfield'}}){
+                               	     
 				push (@customfields, Kayako::Class::CustomField->new($customfield));
 					
                                         	}

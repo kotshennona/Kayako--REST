@@ -151,7 +151,7 @@ sub new {
             		}
 						
 		_AddTokens ($self,$form_ref);
-		#_ToQueryString ($form_ref,'usergroupid[]');
+		_ToQueryString ($form_ref,'usergroupid[]');
 		
 		
 		return $self->{'user_agent'}->post($uri,$form_ref);

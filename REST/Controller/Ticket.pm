@@ -221,8 +221,9 @@ sub new {
 			foreach my $key (%$response_href){
 				$response_href->{$key}->{'ticketid'}=$key;
 				push (@tickets, Kayako::Class::Ticket->new($response_href->{$key}));
-					return @tickets;
+					
 						}
+						return @tickets;
 					}
 		else {
 			return $response;

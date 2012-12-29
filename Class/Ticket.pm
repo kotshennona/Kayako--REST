@@ -5,6 +5,7 @@ use Class::Accessor "antlers";
 
 
 has id => ( is => "ro" );
+has ticketid => ( is => "ro" );
 has displayid => ( is => "ro" );
 has departmentid => ( is => "ro" );
 has statusid => ( is => "ro" );

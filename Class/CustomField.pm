@@ -18,4 +18,8 @@ has displayorder => (is => 'ro');
 has encryptindb => (is => 'ro');
 has description => (is => 'ro');
 
+sub id {
+	my $self = shift;
+	return $self->{'customfieldid'};
+}
 1;
