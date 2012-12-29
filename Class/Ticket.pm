@@ -19,7 +19,7 @@ has ownerstaffname => ( is => "ro" );
 has fullname => ( is => "ro" );
 has email => ( is => "ro" );
 has lastreplier => ( is => "ro" );
-has subject => ( is => "ro" );
+has subject => ( is => "rw" );
 has creationtime => ( is => "ro" );
 has lastactivity => ( is => "ro" );
 has laststaffreply => ( is => "ro" );

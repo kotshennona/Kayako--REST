@@ -144,7 +144,7 @@ sub Get {
                       
                               $group->{'field'}->{$key}->{'name'} = $key;
                               $group->{'field'}->{$key}->{'groupid'} = $group->{'id'};
-                              $group->{'field'}->{$key}->{'grouptitle'} = $group->{'title'};
+                              $group->{'field'}->{'grouptitle'} = $group->{'title'};
 
 				push (@fields, 	Kayako::Class::CustomFieldValue->new($group->{'field'}->{$key}));
 
