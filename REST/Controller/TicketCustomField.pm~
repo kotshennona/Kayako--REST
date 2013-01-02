@@ -130,28 +130,27 @@ sub Get {
 			
 			
 			foreach my $key (keys (%{$response_href->{'group'}})){
-			
+				print $key;
 				$response_href->{'group'}->{$key}->{'id'} = $key;
 				
 				push (@groups,  $response_href->{'group'}->{$key});
                                     
 					}
 
-					my $hash;
+
                         foreach my $group (@groups){
 				foreach my $key (keys (%{$group->{'field'}})) {
-				
-				if (ref ($group->{'field'}->{$key}) eq 'HASH'){
-                                          
-						$group->{'field'}->{$key}->{'name'} = $key;
-						$group->{'field'}->{$key}->{'groupid'} = $group->{'id'};
-						$group->{'field'}->{$key}->{'grouptitle'} = $group->{'title'};
-							
+                                  
+                      print ref ($group->{'field'});
+                      
+                              $group->{'field'}->{$key}->{'name'} = $key;
+                              $group->{'field'}->{$key}->{'groupid'} = $group->{'id'};
+                              $group->{'field'}->{$key}->{'grouptitle'} = $group->{'title'};
 
-                              push (@fields, 	Kayako::Class::CustomFieldValue->new($group->{'field'}->{$key}));
+				push (@fields, 	Kayako::Class::CustomFieldValue->new($group->{'field'}->{$key}));
 
-							}
 						}
+
                                         }
 
 

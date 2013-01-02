@@ -3,9 +3,8 @@ use strict;
 use warnings;
 use Class::Accessor "antlers";
 
-has far => ( is => "rw" );
-has bar => ( is => "rw" );
-has car => ( is => "rw" );
+
+has id => ( is => "ro" );
 has ticketid => ( is => "ro" );
 has displayid => ( is => "ro" );
 has departmentid => ( is => "ro" );
