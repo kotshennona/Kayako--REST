@@ -218,7 +218,9 @@ sub new {
 		if (wantarray){
 			$response_href = XMLin ($response, KeyAttr=>{ticket => 'id' });			
 			$response_href = $response_href->{'ticket'};
-			foreach my $key (%$response_href){
+			
+				foreach my $key (%$response_href){
+					next unless $key =~ m!^\d+$!;
 				$response_href->{$key}->{'ticketid'}=$key;
 				push (@tickets, Kayako::Class::Ticket->new($response_href->{$key}));
 					
