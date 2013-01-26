@@ -2,14 +2,14 @@ package Kayako::REST::Controller;
 use strict;
 use warnings;
 use Digest::SHA qw(hmac_sha256);
-use APR::Base64;
+use MIME::Base64::Perl;
 use URL::Encode;
 
 
 BEGIN {
 $Kayako::REST::Controller::VERSION = "0.29";
 }
-	#########################################################################      
+		#########################################################################      
         #                                                                       #
         #                           Constructor                                 #
         #                                                                       #
@@ -65,7 +65,7 @@ sub new {
 			$query .= '/'.$element if defined($element);
 			}
 		$signature = Digest::SHA::hmac_sha256($salt,$self->{'secret_key'});
-                $signature = APR::Base64::encode($signature);
+                $signature = encode_base64($signature);
                 $signature = URL::Encode::url_encode($signature);
                                
 		 return $self->{'url'}.$query.'&apikey='.$self->{'api_key'}.'&salt='.$salt.'&signature='.$signature;
@@ -79,7 +79,7 @@ sub new {
 		my $signature;
 		
 		$signature = Digest::SHA::hmac_sha256($salt,$self->{'secret_key'});
-                $signature = APR::Base64::encode($signature);
+                $signature = encode_base64($signature);
              
             	$form->{'apikey'} =  $self->{'api_key'};
             	$form->{'salt'} =  $salt;
