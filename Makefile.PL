@@ -18,7 +18,7 @@ my %WriteMakefileArgs = (
     'LWP::UserAgent' => '0',
     'Class::Accessor' => '0',
     'Digest::SHA' => '0',
- 	'APR::Base64' => '0',
+ 	'MIME::Base64::Perl' => '0',
  	'URL::Encode' => '0',
   },
     'VERSION_FROM' => 'REST/Client.pm',
