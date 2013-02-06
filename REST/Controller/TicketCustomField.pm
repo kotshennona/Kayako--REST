@@ -120,7 +120,7 @@ sub Get {
 			$response = $response->decoded_content;
 			}
 		else {
-			warn $response ->status_line;
+			warn $response->status_line;
 			return undef;
 			}
 			
