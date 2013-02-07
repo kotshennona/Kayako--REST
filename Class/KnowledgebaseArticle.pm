@@ -49,7 +49,8 @@ sub attachments {
 		return @attachments;
 			}
 	else {
-		return join (',', @attachments);
+		my $count = @attachments;
+		return $count;
 		
 		}
 }

@@ -33,7 +33,8 @@ sub usergroups {
 		return @usergroups;
 			}
 	else {
-		return join (',', @usergroups);
+		my $count = @usergroups;
+		return $count;
 		
 		}
 }
