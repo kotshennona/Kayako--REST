@@ -54,14 +54,14 @@ sub new {
 			}
 		else {
 			warn ("Missing argument to Get in KnowledgebaseAttachment\n");
-               return undef;
+       return undef;
 			}
 		if ($_[1]) {
 			push @path, $_[0];
 			}
 		else {
 			warn ("Missing argument to Get in KnowledgebaseAttachment\n");
-               return undef;
+       return undef;
 			}
 		
 				
@@ -71,14 +71,14 @@ sub new {
 			}
 		else {
 			warn $response ->status_line;
-                        warn $response->decoded_content;
+warn $response->decoded_content;
 			return undef;
 			}
 			
 				
 		if (wantarray){
 			$response_href = XMLin ($response, KeyAttr=>{KnowledgebaseAttachment => 'id' });			
-			$response_href = $response_href->{'KnowledgebaseAttachment'};
+			$response_href = $response_href->{'kbattachment'};
 			
 				push (@KnowledgebaseAttachments, Kayako::Class::KnowledgebaseAttachment->new($response_href));
 					return @KnowledgebaseAttachments;
@@ -98,7 +98,7 @@ sub new {
 			}
 		else {
 			warn ("Missing argument to GetAll in KnowledgebaseAttachment\n");
-               return undef;
+       return undef;
 			}
 		my $response;
 		my $response_href;
@@ -111,7 +111,7 @@ sub new {
 			}
 		else {
 			warn $response ->status_line;
-                        warn $response->decoded_content;
+warn $response->decoded_content;
 			return undef;
 			}
 			
@@ -148,7 +148,7 @@ sub Add {
 			}
 		else {
 			warn ("Missing argument to Add in KnowledgebaseAttachment\n");
-               return undef;
+       return undef;
 			}
 		my $response;
 		my $response_href;
@@ -172,7 +172,7 @@ sub Add {
 			}
 		else {
 			warn $response ->status_line;
-                        warn $response->decoded_content;
+warn $response->decoded_content;
 			return undef;
 			}
 			
@@ -206,7 +206,7 @@ sub Delete {
 					}
 		else {
 			warn ("Missing argument to Add in KnowledgebaseAttachment\n");
-               return undef;
+       return undef;
 			}
 		my $response;
 										
@@ -216,7 +216,7 @@ sub Delete {
 			}
 		else {
 			warn $response ->status_line;
-                        warn $response->decoded_content;
+warn $response->decoded_content;
 			return undef;
 			}
 					
