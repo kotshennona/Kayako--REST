@@ -9,6 +9,8 @@ use Kayako::REST::Controller::TicketType;
 use Kayako::REST::Controller::CustomField;
 use Kayako::REST::Controller::TicketCustomField;
 use Kayako::REST::Controller::Department;
+use Kayako::REST::Controller::KnowledgebaseAttachment;
+use Kayako::REST::Controller::NewsItem;
 
 $Kayako::REST::Client::VERSION = "0.09";
 
@@ -137,8 +139,12 @@ sub CustomField {
             	    return _NewController ($self,'Kayako::REST::Controller::CustomField');
             }     
 
-sub TicketCustomField {
+sub KnowledgebaseAttachment {
             	    my $self = shift;
-            	    return _NewController ($self,'Kayako::REST::Controller::TicketCustomField');
-            }                
+            	    return _NewController ($self,'Kayako::REST::Controller::KnowledgebaseAttachment');
+            }   
+sub NewsItem {
+            	    my $self = shift;
+            	    return _NewController ($self,'Kayako::REST::Controller::NewsItem');
+            }  
 1;
