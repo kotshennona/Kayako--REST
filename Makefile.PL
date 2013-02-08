@@ -1,4 +1,3 @@
-
 use strict;
 use warnings;
 
@@ -20,6 +19,7 @@ my %WriteMakefileArgs = (
     'Digest::SHA' => '0',
  	'MIME::Base64::Perl' => '0',
  	'URL::Encode' => '0',
+   'XML::Simple' => '0',
   },
     'VERSION_FROM' => 'REST/Client.pm',
   
