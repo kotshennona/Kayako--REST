@@ -111,40 +111,11 @@ sub GetAsHashref {
 	}
 
 
-sub Department {
+sub Controller {
             	    my $self = shift;
-            	    return _NewController ($self,'Kayako::REST::Controller::Department');
+            	    my $controller = shift;
+            	    return _NewController ($self,'Kayako::REST::Controller::'.$controller );
             }    	
             
-sub Ticket {
-            	    my $self = shift;
-            	    return _NewController ($self,'Kayako::REST::Controller::Ticket');
-            }
-sub TicketNote {
-            	    my $self = shift;
-            	    return _NewController ($self,'Kayako::REST::Controller::TicketNote');
-            }
-sub TicketPost {
-            	    my $self = shift;
-            	    return _NewController ($self,'Kayako::REST::Controller::TicketPost');
-            }   
 
-sub TicketType {
-            	    my $self = shift;
-            	    return _NewController ($self,'Kayako::REST::Controller::TicketType');
-            }             
-
-sub CustomField {
-            	    my $self = shift;
-            	    return _NewController ($self,'Kayako::REST::Controller::CustomField');
-            }     
-
-sub KnowledgebaseAttachment {
-            	    my $self = shift;
-            	    return _NewController ($self,'Kayako::REST::Controller::KnowledgebaseAttachment');
-            }   
-sub NewsItem {
-            	    my $self = shift;
-            	    return _NewController ($self,'Kayako::REST::Controller::NewsItem');
-            }  
 1;
