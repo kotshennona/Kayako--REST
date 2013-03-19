@@ -40,9 +40,7 @@ sub new {
 		}
 	}
 	
-	
-	
-	
+		
 		
 	sub Get {
 		my $self = shift;
