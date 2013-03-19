@@ -145,4 +145,36 @@ sub Add {
 		}
 	}	
 	
+sub Delete {
+		my $self = shift;
+		my @path = qw(Tickets TicketPost);
+		my $response;
+		my $response_href;
+		my @response=();
+		
+		if (@_ == 2){
+			push (@path,@_);
+		}
+		
+		else {
+			warn ("Wrong number of arguments in TicketPost Controller!\n");
+			return undef;
+		}
+								
+		$response = $self->SUPER::Delete(@path);
+		if ($response->is_success){
+			$response = $response->decoded_content;
+			}
+		else {
+			warn $response ->status_line;
+                        warn $response->decoded_content;
+			return undef;
+			}
+			
+				
+			return $response;
+		
+					
+	}	
+	
 1;	
