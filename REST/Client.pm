@@ -11,6 +11,7 @@ use Kayako::REST::Controller::TicketCustomField;
 use Kayako::REST::Controller::Department;
 use Kayako::REST::Controller::KnowledgebaseAttachment;
 use Kayako::REST::Controller::NewsItem;
+use Kayako::REST::Controller::Staff;
 
 $Kayako::REST::Client::VERSION = "0.09";
 
