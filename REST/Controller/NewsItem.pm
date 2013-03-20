@@ -40,11 +40,11 @@ sub new {
 		}
 	}
 	
-==head2 GetAll ([categoryid])
+=head2 GetAll 
 Retrieves a News Item, identified by its id.
 In scalar context returns server response in XML.
 In list context returns an array (containing one Kayako::Class::NewsItem object).
-==cut			
+=cut			
 		
 	sub Get {
 		my $self = shift;
@@ -86,12 +86,12 @@ warn $response->decoded_content;
 					
 	}
 
-==head2 GetAll ([categoryid])
+=head2 GetAll ([categoryid])
 Retrieves a list of news items, optionally filtered by category id. This method provides interface to 2 differrent
 api methods.
 In scalar context returns server response in XML.
 In list context returns an array of Kayako::Class::NewsItem objects.
-==cut	
+=cut	
 	sub GetAll {
 		my $self = shift;
 		my @path;
@@ -140,9 +140,9 @@ In list context returns an array of Kayako::Class::NewsItem objects.
 					
 	}
 
-==head2 Add
+=head2 Add
 Create a new news item. Takes a hash reference as argument.
-==head3 POST Arguments 
+=head3 POST Arguments 
 REQUIRED:
 subject 	The news item subject.
 contents 	The news item contents.
@@ -163,13 +163,13 @@ staffgroupidlist 	The staff group id list. Multiple values comma separated like 
 expiry	The expiry date in m/d/Y format.
 newscategoryidlist 	The category ID list. Multiple values comma separated like 1,2,3. 
 
-==cut
+=cut
 
 sub Add {
 		my $self = shift;
 		my @path = qw/News NewsItem/;
 		my $form_ref;
-		my @required_field = qw/subject staffid contents/;
+		my @required_fields = qw/subject staffid contents/;
 		
 		if ($_[0]){
 			$form_ref =  $_[0];
@@ -225,15 +225,15 @@ warn $response->decoded_content;
 					
 	}
 	
-==head2 Update
+=head2 Update
 Makes a news item unavailable to users;
 $client->NewsItem->Update($itemid, \%form);
-==cut
+=cut
 	sub Update {
 		my $self = shift;
 		my @path = qw/News NewsItem/;
 		my $form_ref;
-		my @required_field = qw/subject editedstaffid contents/;
+		my @required_fields = qw/subject editedstaffid contents/;
 		
 		if ($_[0]){
 			push (@path, $_[0]);
@@ -296,10 +296,10 @@ warn $response->decoded_content;
 					
 	}
 	
-==head2 Delete
+=head2 Delete
 Makes a news item unavailable to users;
 $client->NewsItem->Delete($itemid);
-==cut
+=cut
 sub Delete {
 		my $self = shift;
 		my @path = qw(News NewsItem);
