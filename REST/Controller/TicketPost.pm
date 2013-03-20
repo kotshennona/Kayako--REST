@@ -98,7 +98,7 @@ sub Add {
 		my $response_href;
 		my $response;
 		my @tickets;
-		my @required = qw(ticketid,contents);
+		my @required = qw(ticketid contents);
 		
 		
 		if (@_){

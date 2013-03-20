@@ -141,7 +141,7 @@ sub Add {
 		my $self = shift;
 		my @path = qw(Knowledgebase Attachment);
 		my $form_ref;
-		my @required_field = qw/bkarticleid filename contents/;
+		my @required_fields = qw/bkarticleid filename contents/;
 		
 		if ($_[0]){
 			$form_ref =  $_[0];
