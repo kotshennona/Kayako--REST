@@ -41,4 +41,57 @@ sub new {
 		}
 	}
 	
+sub Add {
+		
+		my $self = shift;
+		my @path = qw(Tickets TicketNote);
+		my $form_ref;
+		my $response_href;
+		my $response;
+		my @tickets;
+		my @required = qw(ticketid contents);
+		
+		
+		if (@_){
+			
+			$form_ref = shift;
+			
+			}
+		else {
+			warn ("Post in TicketNote Controller requires a hashref as its arguments");
+			return undef;
+			}
+		
+		foreach my $field (@required) {
+			unless ($form_ref->{$field}){
+				warn ("$field is required!\n");
+				return undef;
+				}
+
+			
+ 
+		$response = $self->SUPER::Post(@path,$form_ref);
+		
+		if ($response->is_success){
+			$response = $response->decoded_content;
+			}
+		else {
+			warn $response ->status_line."\n".$response->decoded_content."\n";
+			return undef;
+			}
+	
+		if (wantarray){
+			$response_href = XMLin ($response, KeyAttr=>{note => 'id' });			
+			$response_href = $response_href->{'note'};
+			
+			push (@tickets, Kayako::Class::TicketNote->new($response_href));
+				return @tickets;
+						
+					}
+		else {
+			return $response;
+				}
+	
+		}
+	}	
 1;
