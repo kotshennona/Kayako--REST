@@ -72,6 +72,22 @@ sub new {
 		
 			}	
            
+           sub GetPlainUri {
+		my $self = shift;
+		my @parts = @_;
+		my $uri = '';
+		my $query;
+		
+		foreach my $element (@parts) {
+			$query .= '/'.$element if defined($element);
+			}
+		
+                               
+		 return $self->{'url'}.$query;
+		
+			}	
+           
+           
             sub _AddTokens ($$) {
             	my $self = shift;
             	my $form = shift;
@@ -131,8 +147,8 @@ sub new {
             		}
 		
 		
-		_AddTokens ($self,$form_ref);
-		_ToQueryString ($form_ref,'usergroupid[]');
+		#_AddTokens ($self,$form_ref);
+		#_ToQueryString ($form_ref,'usergroupid[]');
 				
 		return $self->{'user_agent'}->put($uri,$form_ref);
 		

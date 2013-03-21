@@ -52,12 +52,7 @@ sub Get {
 		if (@_ == 1 ){
 			push (@path,@_);
 		}
-		
-		else {
-			warn ("Wrong number of arguments in Staff Controller!\n");
-			return undef;
-		}
-								
+										
 		$response = $self->SUPER::Get(@path);
 		if ($response->is_success){
 			$response = $response->decoded_content;
@@ -73,7 +68,7 @@ sub Get {
 			$response_href = XMLin ($response);
 			
 			
-			foreach my $key (keys (%{$response_href->{'post'}})){
+			foreach my $key (keys (%{$response_href->{'staff'}})){
 				
 				$response_href->{'staff'}->{$key}->{'id'} = $key;
 				

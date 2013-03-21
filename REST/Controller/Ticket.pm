@@ -120,16 +120,18 @@ sub new {
 		foreach  my $field (@editable_fields){
 			$editable_fields{$field} = 1;
 			}
-		foreach my $key (%$form_ref){
-			delete $form_ref->{$key} unless $editable_fields{$key};
-			}
+	#	foreach my $key (%$form_ref){
+		#	delete $form_ref->{$key} unless $editable_fields{$key};
+		#	}
 		
 			$response = $self->SUPER::Put(@path,$form_ref);
 		if ($response->is_success){
 			$response = $response->decoded_content;
+		
 			}
 		else {
 			warn $response ->status_line;
+			warn $response ->decoded_content;
 			return undef;
 			}
 	
