@@ -96,10 +96,12 @@ sub new {
 		
 		$signature = Digest::SHA::hmac_sha256($salt,$self->{'secret_key'});
                 $signature = encode_base64($signature);
+                $signature = URL::Encode::url_encode($signature);
              
             	$form->{'apikey'} =  $self->{'api_key'};
             	$form->{'salt'} =  $salt;
             	$form->{'signature'} =  $signature;
+
             }
             
             sub _ToQueryString ($@){
@@ -118,6 +120,18 @@ sub new {
             	return 1;
             	}
             
+             sub _ToString ($){
+            	my $form_ref = shift;
+         		   my $temp_line='';
+            	foreach my $field (keys %$form_ref){
+            		        		
+            		
+            			$temp_line .= $field.'='.$form_ref->{$field}.'&';
+            			
+            		}
+            		
+            	return $temp_line;
+            	}
       	
      
 	#########################################################################      
@@ -139,18 +153,19 @@ sub new {
 		my @path = @_;
 		my $form_ref = pop(@path);
 		
-		my $uri = GetUri($self,@path);
+		my $uri = GetPlainUri($self,@path);
 		
 		if (ref($form_ref) ne 'HASH'){
             		warn "Last argument to the UpdateDepartment must be a HASH reference";
             		return 0;
             		}
 		
+		 _AddTokens ($self,$form_ref);
 		
-		#_AddTokens ($self,$form_ref);
+		
 		#_ToQueryString ($form_ref,'usergroupid[]');
-				
-		return $self->{'user_agent'}->put($uri,$form_ref);
+		$self->{'user_agent'}->default_header('Content-type' => 'application/x-www-form-urlencoded');	
+		return $self->{'user_agent'}->put($uri, Content=>_ToString($form_ref));
 		
 	}
 	
