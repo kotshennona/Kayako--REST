@@ -1,4 +1,4 @@
-package Kayako::Class::Ticket;
+package Kayako::Class::TicketPost;
 use strict;
 use warnings;
 use Class::Accessor "antlers";
