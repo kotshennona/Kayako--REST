@@ -96,7 +96,7 @@ sub new {
 		
 		$signature = Digest::SHA::hmac_sha256($salt,$self->{'secret_key'});
                 $signature = encode_base64($signature);
-                $signature = URL::Encode::url_encode($signature);
+               
              
             	$form->{'apikey'} =  $self->{'api_key'};
             	$form->{'salt'} =  $salt;
@@ -161,6 +161,7 @@ sub new {
             		}
 		
 		 _AddTokens ($self,$form_ref);
+		 $form_ref->{'signature'} = URL::Encode::url_encode($form_ref->{'signature'});
 		
 		
 		#_ToQueryString ($form_ref,'usergroupid[]');
@@ -174,7 +175,7 @@ sub new {
 		my @path = @_;
 		my $form_ref = pop(@path);
 		
-		my $uri = GetUri($self,@path);
+		my $uri = GetPlainUri($self,@path);
 		
 		if (ref($form_ref) ne 'HASH'){
             		warn "UpdateDepartment takes a hash reference as an argument\n";
@@ -184,6 +185,7 @@ sub new {
 		_AddTokens ($self,$form_ref);
 		_ToQueryString ($form_ref,'usergroupid[]');
 		
+		$self->{'user_agent'}->default_header('Content-type' => 'multipart/form-data');	
 		
 		return $self->{'user_agent'}->post($uri,$form_ref);
 		
