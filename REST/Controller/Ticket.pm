@@ -2,7 +2,7 @@ package Kayako::REST::Controller::Ticket;
 use strict;
 use warnings;
 use Kayako::Class::Ticket;
-use XML::Simple;
+use XML::Simple qw(:strict);
 
 BEGIN {
 use parent 'Kayako::REST::Controller';
@@ -218,20 +218,68 @@ sub new {
 			
 				
 		if (wantarray){
-			$response_href = XMLin ($response, KeyAttr=>{ticket => 'id' });			
+			$response_href = XMLin ($response, ForceArray=>0,KeyAttr=>0);			
 			$response_href = $response_href->{'ticket'};
 			
-				foreach my $key (%$response_href){
-					next unless $key =~ m!^\d+$!;
-				$response_href->{$key}->{'ticketid'}=$key;
-				push (@tickets, Kayako::Class::Ticket->new($response_href->{$key}));
+					
+				if (ref $response_href eq 'ARRAY'){
+					foreach my $key (@$response_href){
+					$key->{'ticketid'} = $key->{'id'};
+					push (@tickets, Kayako::Class::Ticket->new ($key));
+					
+					}
+				}	
+				elsif (ref $response_href eq 'HASH'){
+					
+					#my @hack_array = (qw(%$response_href));
+					#$response_href = { };
+					#for (my $i=0; $i<$#hack_array; $i=$i+2 ){
+					#	$response_href->{$hack_array[$i]} = $hack_array[$i+1];
+					#}
+					
+				
+					$response_href->{'ticketid'} = $response_href->{'id'};
+					push (@tickets, Kayako::Class::Ticket->new ($response_href));
 					
 						}
-						return @tickets;
-					}
+				else {
+					;
+				}	
+				return @tickets;
+		}
 		else {
 			return $response;
 				}
+					
+	}
+	
+	sub Delete {
+		my $self = shift;
+		my @path = qw(Tickets Ticket);
+		my $response;
+		my $response_href;
+		
+		
+		if (@_){
+			push (@path,shift);
+		}
+		else {
+			warn ("Missing argument to Get in Ticket Controller!\n");
+			return undef;
+		}
+		
+		$response = $self->SUPER::Delete(@path);
+		if ($response->is_success){
+			$response = 1;
+			}
+		else {
+			warn $response ->status_line;
+			return undef;
+			}
+			
+			
+			return $response;
+				
 					
 	}
 

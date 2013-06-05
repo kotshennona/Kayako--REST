@@ -77,7 +77,7 @@ sub Get {
 				
 				$response_href->{'post'}->{$key}->{'id'} = $key;
 				
-				push (@response,  Kayako::Class::Department->new($response_href->{'post'}->{$key}));
+				push (@response,  Kayako::Class::TicketPost->new($response_href->{'post'}->{$key}));
 					print $#response;
 					
 						}
@@ -89,7 +89,60 @@ sub Get {
 					
 	}
 
-
+sub GetAll {
+		my $self = shift;
+		my @path = qw(Tickets TicketPost ListAll);
+		my $response;
+		my $response_href;
+		my @response=();
+		
+		if (@_ == 1 ){
+			push (@path,@_);
+		}
+		
+		else {
+			warn ("Wrong number of arguments in TicketPost Controller!\n");
+			return undef;
+		}
+								
+		$response = $self->SUPER::Get(@path);
+		if ($response->is_success){
+			$response = $response->decoded_content;
+			}
+		else {
+			warn $response ->status_line;
+                        warn $response->decoded_content;
+			return undef;
+			}
+			
+				
+		if (wantarray){
+			$response_href = XMLin ($response);
+			
+		
+				foreach my $key (keys (%{$response_href->{'post'}})){
+				
+				if (ref $response_href->{'post'}->{$key} eq 'HASH'){				
+					$response_href->{'post'}->{$key}->{'id'} = $key;
+					push (@response,  Kayako::Class::TicketPost->new($response_href->{'post'}->{$key}));
+						}
+				else {
+					push (@response,  Kayako::Class::TicketPost->new($response_href->{'post'}));
+						
+					}
+						
+			}
+			
+			
+			
+			
+			return @response;	
+				}
+		else {
+			return $response;
+				}
+					
+	}
 sub Add {
 		
 		my $self = shift;
